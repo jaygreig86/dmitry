@@ -1,0 +1,117 @@
+.TH DMitry 1 "March 2006" "1.3a"
+.SH NAME
+DMitry - Deepmagic Information Gathering Tool
+.SH SYNOPSIS
+.B dmitry
+[Options] host
+.br
+.SH DESCRIPTION
+DMitry (Deepmagic Information Gathering Tool) is a UNIX/(GNU)Linux Command 
+Line program coded purely in C with the ability to gather as much information 
+as possible about a host.
+
+DMitry has a base functionality with the ability to add new functions.
+Basic functionality of DMitry allows for information to be gathered about a
+target host from a simple whois lookup on the target to UpTime reports and TCP portscans.
+
+The application is considered a tool to assist in information gathering when
+information is required quickly by removing the need to enter multiple commands 
+and the timely process of searching through data from multiple sources.
+
+To get straight into DMitry without reading this document, you can initially
+type "dmitry target", this will perform the majority of functions on the target.
+
+.SH OPTIONS
+Options should be passed to DMitry in the form of '-option'.
+Only options known by DMitry will be used and others will be ignored.
+If options are not passed as a group block, the trailing options will be considered a host target.
+.TP
+.B -o filename
+Create an ascii text output of the results to the "filename" specified.  If no output filename is specified
+then output will be saved to "target.txt".  If this option is not specified in any form output will be sent to
+the standard output (STDOUT) by default.  This option MUST trail all other options, i.e. "./dmitry -winseo target". 
+.TP
+.B -i
+Perform an Internet Number whois lookup on the target.  This requires that the target be in the form of a 4 part Internet Number
+with each octal seperated using the `.' notation. For example, "./dmitry -i 255.255.255.255".
+.TP
+.B -w
+Perform a whois lookup on the 'host' target.  This requires that the target be in a named character format.
+For example, "./dmitry -w target" will perform a standard named whois lookup.
+.TP
+.B -n
+Retrieve netcraft.com data concerning the host, this includes Operating System, Web Server release and UpTime information
+where available.
+.TP
+.B -s
+Perform a SubDomain search on the specified target.  This will use serveral search engines to attempt to locate sub-domains
+in the form of sub.target.  There is no set limit to the level of sub-domain that can be located, however, there is a maximum
+string length of 40 characters (NCOL 40) to limit memory usage.  Possible subdomains are then reversed to an IP address, if
+this comes back positive then the resulting subdomain is listed.  However, if the host uses an asterisk in their DNS records
+all resolve subdomains will come back positive.
+.TP
+.B -e
+Perform an EmailAddress search on the specified target.  This modules works using the same concept as the SubDomain search by
+attempting to locate possible e-mail addresses for a target host.  The e-mail addresses may also be for possible sub-domains of
+the target host.  There is a limit to the length of the e-mail address set to 50 characters (NCOL 50) to limit memory usage.
+.TP
+.B -p
+Perform a TCP Portscan on the host target.  This is a pretty basic module at the moment, and we do advise users to use something
+like nmap (www.insecure.org/nmap/) instead.  This module will list open, closed and filtered ports within a specific range.  
+There will probably be little advancement upon this module, though there will be some alterations to make it a little more user
+friendly.  There are also other options for this module that can affect the scan and its relative output.
+.TP
+.B -f
+This option will cause the TCP Portscan module to report/display output of filtered ports.  These are usually ports that have been
+filtered and/or closed by a firewall at the specified host/target.  This option requires that the '-p' option be passed as a previous option.
+For example, "./dmitry -pf target".
+.TP
+.B -b
+This option will cause the TCP Portscan module to output Banners if they are received when scanning TCP Ports.  This option requres
+that the '-p' option be passed as a previous option.  For example, "./dmitry -pb target".
+.TP
+.B -t
+This sets the Time To Live (TTL) of the Portscan module when scanning individual ports.  This is set to 2 seconds by default.
+This is usually required when scanning a host that has a firewall and/or has filtered ports which can slow a scan down.
+.SH EXAMPLES
+This section presents some example queries that can be made using dmitry.  The hosts and targets used in the examples
+are merely used for demonstration.
+
+.B dmitry -w example-host.com
+
+This will perform a named whois (INIC-WHOIS) lookup on the target host, displaying results to the standard output (STDOUT).
+
+.B dmitry -winsepo sometextfile.txt example-host.com
+
+This will perform all the basic functions on the target host and store all the output into "sometextfile.txt".
+
+.B dmitry -winsepo example-host.com
+
+This will perform all the basic functions on the target host and store all the output into "example-host.com.txt".
+
+.B dmitry -winsepfbo 127.0.0.1
+
+This will perform all the basic functions on the target host and store all the output into "127.0.0.1.txt".  This
+will also display banners and show filtered ports.
+
+.SH BUGS
+
+Bugs? if you find any e-mail me at james@mor-pah.net with information your OS, what caused the problem, the error, suggestions etc.
+Thanx
+
+.SH DISTRIBUTION
+
+DMitry, Deepmagic Information Gathering Tool is Copyright (C) 2001 - 2005 by James Greig.
+
+Source code is provided with this software to allow users and developers to understand the software for security auditing purposes.
+We allow users to view the source code so that they are able to port the software to different Operating Systems with the ability to locate bugs and so forth.
+
+.SH AUTHOR
+.B Programmer/Creator
+.br
+James Greig - James@mor-pah.net - http://www.mor-pah.net
+.br
+.br
+.B Conceptual Design
+.br
+Phased - http://www.deepmagic.org.uk

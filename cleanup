@@ -1,0 +1,6 @@
+rm -rf .deps
+rm -rf Makefile
+rm -rf config.status
+rm -rf config.log
+rm -rf autom4te.cache
+rm -rf config.h
