@@ -80,7 +80,7 @@ appear in newer versions of *BSD. I.e FreeBSD 6.
 Version 1.3:
 Just a quick release to fix the netcraft function output
 Also fixed the command line typo to include -e
-Removed the dmitrybot, it will bo longer be available
+Removed the dmitrybot, it will no longer be available
 
 Version 1.2a:
 
