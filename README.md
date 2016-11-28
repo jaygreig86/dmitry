@@ -136,6 +136,7 @@ Fixed .uk whois bug => reg.nic.uk => whois.nic.uk
 =========================================================================
 
 FIX google subdomain searches (most likely requires CURL to connect over SSL)
+
 FIX Netcraft page reading
 
 =========================================================================
