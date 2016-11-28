@@ -135,21 +135,8 @@ Fixed .uk whois bug => reg.nic.uk => whois.nic.uk
 4. TO DO:
 =========================================================================
 
----
-Add more functionality
----
-
----
-Add ability to easily add custom made functions
----
-
----
-Ensure stability
----
-
----
-Bug check entire program
----
+FIX google subdomain searches (most likely requires CURL to connect over SSL)
+FIX Netcraft page reading
 
 =========================================================================
 5. Feature Status
