@@ -127,7 +127,7 @@ Added a quick feature to allow for a search of www.host if host alone fails
 
 Modified google.com query string from %22host%22 ("host") to %2Bhost (+host)
 
-Modified google.com format string to locate bold <b> strings also
+Modified google.com format string to locate bold also
 
 Fixed .uk whois bug => reg.nic.uk => whois.nic.uk
 
