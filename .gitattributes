@@ -1,1 +1,2 @@
-"* linguist-language=C"  
+* linguist-language=C
+src/* linguist-language=C
