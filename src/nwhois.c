@@ -137,6 +137,11 @@ int nic_format_buff(char *buff, int listn)
 		}
 		frmtdbuff[strlen(frmtdbuff)] = buff[ctr];
 		ctr++;
+		if (strlen(frmtdbuff) >= sizeof(frmtdbuff) - 1) {
+			/* frmtdbuff is full, do not let it overflow */
+			print_line("%s", frmtdbuff);
+			memset(frmtdbuff, '\0', sizeof(frmtdbuff));
+		}
 	}
 	if ( strlen(frmtdbuff) ) linetodo = 1;
 	return 0;
