@@ -25,11 +25,11 @@ int get_nwhois(char *host)
 	/* Print introduction to function */
 	memset(linebuff, '\0', sizeof(linebuff));
 	snprintf(linebuff, sizeof(linebuff), "\nGathered Inic-whois information for %s\n", fhost);
-	print_line(linebuff);
+	print_line("%s", linebuff);
 
 	memset(linebuff, '\0', sizeof(linebuff));
 	snprintf(linebuff, sizeof(linebuff), "---------------------------------\n");
-	print_line(linebuff);
+	print_line("%s", linebuff);
 
 	/* TopLevelDomain output */
 	if (!( hostn = get_td(fhost) )){
