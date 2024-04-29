@@ -76,7 +76,7 @@ int get_emails(char *host)
 	
 	memset(sendbuff, '\0', sizeof(sendbuff));
 	snprintf(sendbuff, sizeof(sendbuff), "Found %d E-Mail(s) for host %s, Searched %d pages containing %d results\n", emailcount, hostwww, totalpages, totalpages*100);
-	print_line(sendbuff);
+	print_line("%s", sendbuff);
 	if (strlen(outputfile)) file_close();
 	return 0;
 }
@@ -177,7 +177,7 @@ int emaillist(char *email, char *host)
         strcpy(emailbuff[emailcount], email);
 
         snprintf(output, sizeof(output), "%s%s\n", emailbuff[emailcount], host);
-	print_line(output);
+	print_line("%s", output);
 	emailcount++;
 	return 0;
 }
