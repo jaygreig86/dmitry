@@ -20,7 +20,10 @@ int get_emails(char *host)
                 } while ( host[ctr] != '\n' && host[ctr] != '\0' );
                 hostwww[strlen(hostwww)] = '\0';
         }
-        else strcpy(hostwww, host);
+        else {
+            strncpy(hostwww, host, sizeof(hostwww) - 1);
+            hostwww[sizeof(hostwww) - 1] = '\0';
+        }
 
 	if (strlen(outputfile)) file_open();
 
