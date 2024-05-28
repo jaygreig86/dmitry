@@ -20,7 +20,10 @@ int get_subdomains(char *host)
                 } while ( host[ctr] != '\n' && host[ctr] != '\0' );
                 hostwww[strlen(hostwww)] = '\0';
         }
-        else strcpy(hostwww, host);
+        else {
+            strncpy(hostwww, host, sizeof(hostwww) - 1);
+            hostwww[sizeof(hostwww) - 1] = '\0';
+        }
 
 	if (strlen(outputfile)) file_open();
 
@@ -74,7 +77,7 @@ int get_subdomains(char *host)
 	if (subcount == -1) subcount = 0;
 	memset(sendbuff, '\0', sizeof(sendbuff));
 	snprintf(sendbuff, sizeof(sendbuff), "Found %d possible subdomain(s) for host %s, Searched %d pages containing %d results\n", subcount, hostwww, totalpages, totalpages*100);
-	print_line(sendbuff);
+	print_line("%s", sendbuff);
 	if (strlen(outputfile)) file_close();
 	return 0;
 }

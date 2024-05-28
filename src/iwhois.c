@@ -9,11 +9,11 @@ int get_iwhois(char *host)
 	/* Print introduction to function */
 	memset(linebuff, '\0', sizeof(linebuff));
 	snprintf(linebuff, sizeof(linebuff), "\nGathered Inet-whois information for %s\n", host);
-	print_line(linebuff);
+	print_line("%s", linebuff);
 
 	memset(linebuff, '\0', sizeof(linebuff));
 	snprintf(linebuff, sizeof(linebuff), "---------------------------------\n\n");
-	print_line(linebuff);
+	print_line("%s", linebuff);
 	if (! host[0] ){
 		print_line("ERROR: No Host IP to work from\n");
 		if ( strlen(outputfile) ) file_close();

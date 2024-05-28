@@ -95,7 +95,8 @@ int main(int argc, char **argv)
 					snprintf(outputfile, sizeof(outputfile), "%s.txt", argv[argc-1]);
 				}
 				else {
-					strcpy(outputfile, optarg);
+					strncpy(outputfile, optarg, sizeof(outputfile) - 1);
+					outputfile[sizeof(outputfile) - 1] = '\0';
 				}
 				break;
 			case 'v':
@@ -142,14 +143,16 @@ int main(int argc, char **argv)
 				print_line("ERROR: Unable to locate Host IP addr. for %s\n", argv[argc - 1]);
 				print_line("Continuing with limited modules\n");
 			}
-			strcpy(host_name, argv[argc - 1]);
+			strncpy(host_name, argv[argc - 1], MAXNAMELEN - 1);
+			host_name[MAXNAMELEN - 1] = '\0';
 			break;
 		default:
 			if (! get_host(argv[argc - 1], host_name) ) {
 				print_line("ERROR: Unable to locate Host Name for %s\n", argv[argc - 1]);
 				print_line("Continuing with limited modules\n");
 			}
-			strcpy(host_ip, argv[argc - 1]);
+			strncpy(host_ip, argv[argc - 1], MAXIPLEN - 1);
+			host_ip[MAXIPLEN - 1] = '\0';
 			break;
 	}
 	print_line("HostIP:%s\n", host_ip);
