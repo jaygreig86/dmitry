@@ -1,4 +1,6 @@
 #include "includes/file.h"
+#include <string.h>
+#include <stdlib.h>
 int file_prep()
 {
 	outputfile[strlen(outputfile)] = '\0';
