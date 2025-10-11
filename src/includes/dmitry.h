@@ -1,16 +1,16 @@
-int optchar;
-int options[10];
-int ctr;
-extern void print_line();
+extern int optchar;
+extern int options[10];
+extern int ctr;
+extern void print_line(char *string, char *string2);
 extern int get_host(char *host, char *dest);
-extern int get_emails();
+extern int get_emails(char *host);
 extern int file_prep();
 extern int file_open();
 extern int file_close();
-extern int get_iwhois();
-extern int get_nwhois();
-extern int get_subdomains();
-extern int get_netcraft();
+extern int get_iwhois(char *host);
+extern int get_nwhois(char *host);
+extern int get_subdomains(char *host);
+extern int get_netcraft(char *host);
 extern int portscan(char *entry, int ttl, int options);
 char outputfile[64];
 

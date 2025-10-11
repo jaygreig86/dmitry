@@ -1,5 +1,8 @@
 #include "includes/portscan.h"
 #include <string.h>
+
+int closed;
+
 int sock_con(char *host, int port, int ttl);
 extern int file_open();
 extern int file_close();

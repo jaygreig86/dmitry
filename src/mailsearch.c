@@ -1,5 +1,10 @@
 #include "includes/mailsearch.h"
 
+int emailcount;
+char **emailbuff;
+int pagenumber;
+char pagestring[32];
+
 int get_emails(char *host)
 {
 	char hostwww[64];
@@ -28,7 +33,7 @@ int get_emails(char *host)
 	if (strlen(outputfile)) file_open();
 
 	print_line("\nGathered E-Mail information for %s\n", hostwww);
-	print_line("---------------------------------\n");
+	print_line("---------------------------------\n", NULL);
 
 	
 	/* This constructs the string to signal a new page (if it's found that is) */
@@ -39,13 +44,13 @@ int get_emails(char *host)
 		memset(sendbuff, '\0', sizeof(sendbuff));
 		switch(engine){
 			case 1:
-				if (! pagenumber ) print_line("Searching Google.com:80...\n");
+				if (! pagenumber ) print_line("Searching Google.com:80...\n", NULL);
 				tcp_socket("google.com", 80);
 				snprintf(sendbuff, sizeof(sendbuff), "GET http://www.google.com/search?hl=en&lr=&ie=UTF-8&oe=UTF-8&q=allintext:+%%3Ca+href%%3Dmailto+%s&start=%d&sa=N&filter=1&num=100 HTTP/1.0\r\n\r\n", (char *)hostwww, pagenumber*100);
 				snprintf(pagestring, sizeof(pagestring), "rt=%d&sa=N", (pagenumber+1)*100);
 				break;
 			case 2:
-				if (! pagenumber ) print_line("Searching Altavista.com:80...\n");
+				if (! pagenumber ) print_line("Searching Altavista.com:80...\n", NULL);
 				tcp_socket("uk.altavista.com", 80);
 				snprintf(sendbuff, sizeof(sendbuff), "GET http://uk.altavista.com/web/results?q=%%3Ca+href%%3Dmailto+%s&kgs=0&kls=0&avkw=aapt&stq=%d&nbq=100 HTTP/1.0\r\n\r\n", hostwww, pagenumber*100);
 				snprintf(pagestring, sizeof(pagestring), "&stq=%d", (pagenumber+1)*100);
@@ -171,11 +176,11 @@ int emaillist(char *email, char *host)
 
 	emailbuff = realloc(emailbuff, (emailcount+1) * (sizeof(char) * NCOL));
 	if (!emailbuff){
-		print_line("ERROR: Realloc in E-MailSearch module failed\n");
+		print_line("ERROR: Realloc in E-MailSearch module failed\n", NULL);
 		return 1;
 	}
 	emailbuff[emailcount] = malloc(NCOL*sizeof(char));
-	if (!emailbuff[emailcount]) print_line("ERROR: Malloc in E-MailSearch module failed\n");	
+	if (!emailbuff[emailcount]) print_line("ERROR: Malloc in E-MailSearch module failed\n", NULL);
 
         strcpy(emailbuff[emailcount], email);
 

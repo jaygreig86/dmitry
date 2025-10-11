@@ -15,6 +15,9 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
+int optchar;
+int options[10];
+
 int main(int argc, char **argv)
 {
 	int ttl = 2;		/*Portscan TimeToLive*/
@@ -142,7 +145,7 @@ int main(int argc, char **argv)
 		case INADDR_NONE:
 			if (! get_host(argv[argc - 1], host_ip) ) {
 				print_line("ERROR: Unable to locate Host IP addr. for %s\n", argv[argc - 1]);
-				print_line("Continuing with limited modules\n");
+				print_line("Continuing with limited modules\n", NULL);
 			}
 			strncpy(host_name, argv[argc - 1], MAXNAMELEN - 1);
 			host_name[MAXNAMELEN - 1] = '\0';
@@ -150,7 +153,7 @@ int main(int argc, char **argv)
 		default:
 			if (! get_host(argv[argc - 1], host_name) ) {
 				print_line("ERROR: Unable to locate Host Name for %s\n", argv[argc - 1]);
-				print_line("Continuing with limited modules\n");
+				print_line("Continuing with limited modules\n", NULL);
 			}
 			strncpy(host_ip, argv[argc - 1], MAXIPLEN - 1);
 			host_ip[MAXIPLEN - 1] = '\0';
@@ -167,7 +170,7 @@ int main(int argc, char **argv)
 	if ( options[4] && strlen(host_name)) get_subdomains(host_name);
 	if ( options[5] && strlen(host_name)) get_emails(host_name);
 	if ( options[3] >= 1 && strlen(host_ip)) portscan(host_ip, ttl, options[3]);
-	print_line("\nAll scans completed, exiting\n");
+	print_line("\nAll scans completed, exiting\n", NULL);
 
 	return 0;
 }

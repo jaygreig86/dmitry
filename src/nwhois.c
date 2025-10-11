@@ -1,5 +1,9 @@
 #include "includes/nwhois.h"
 
+char td[10];
+char query[128];
+int linetodo;
+
 int get_nwhois(char *host)
 {
 	int hostn;

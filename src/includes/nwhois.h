@@ -2,18 +2,18 @@
 #include <string.h>
 #include "file.h"
 #include "tcp_sock.h"
-extern int tcp_socket();
+extern int tcp_socket(char *host, int port);
 extern void tcp_sockdcon();
-extern void readData();
-extern void print_line();
-extern void sendData();
-int nic_string_search();
-int get_td();
+extern void readData(char *readbuff, int readsize);
+extern void print_line(char *string, char *string2);
+extern void sendData(char *sendbuff, int sendsize);
+int nic_string_search(char *host);
+int get_td(char *host);
 int get_whois();
-int nic_format_buff();
-char td[10];
-char query[128];
-int linetodo;   /* This is used to symbolise to nic_format_buff() that there is a line still to format */
+extern int nic_format_buff(char *buff, int listn);
+extern char td[10];
+extern char query[128];
+extern int linetodo;   /* This is used to symbolise to nic_format_buff() that there is a line still to format */
 extern char outputfile[64];
 extern int file_open();
 extern void file_close();

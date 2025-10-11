@@ -5,29 +5,29 @@
 #include "tcp_sock.h"
 #include "file.h"
 #define MAXHOSTS 4
-int result;
-int check = 0;
-int ctr2 = 0;
-int check2 = 0;
-int tmp;
-int ctr3;
-int ctr4;
-int ctr;
-char ch;
-char netb[64];
-char filebuff[1024];
-char recvbuff[128];
-char sendbuff[255];
-extern int tcp_socket();
+extern int result;
+extern int check;
+extern int ctr2;
+extern int check2;
+extern int tmp;
+extern int ctr3;
+extern int ctr4;
+extern int ctr;
+extern char ch;
+extern char netb[64];
+extern char filebuff[1024];
+extern char recvbuff[128];
+extern char sendbuff[255];
+extern int tcp_socket(char *host, int port);
 extern void tcp_sockdcon();
-extern void readData();
-extern void print_line();
-extern void sendData();
-int ip_string_search();
-int get_iwhois();
-int ip_format_buff();
-int linetodo;   /* This is used to symbolise to ip_format_buff() that there is a line still to format */
-char query[26];
+extern void readData(char *readbuff, int readsize);
+extern void print_line(char *string, char *string2);
+extern void sendData(char *sendbuff, int sendsize);
+int ip_string_search(int server);
+extern int get_iwhois(char *host);
+int ip_format_buff(char *buff, int server);
+extern int linetodo;   /* This is used to symbolise to ip_format_buff() that there is a line still to format */
+extern char query[26];
 extern char outputfile[64];
 extern int file_open();
 extern void file_close();

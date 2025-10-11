@@ -13,7 +13,7 @@
 #include <stdio.h>
 static sigjmp_buf jmpbuf;
 
-static void sig_alrm();
+static void sig_alrm(int);
 extern int tmp;
 int sock_con(char *host, int port, int ttl)
 {
@@ -54,7 +54,7 @@ void banner(char *readbuff, int readsize)
 	printf(">> %s\n", readbuff);
 }
 
-void sig_alrm()
+void sig_alrm(int)
 {
         siglongjmp(jmpbuf, 1);
 	printf("werd\n");

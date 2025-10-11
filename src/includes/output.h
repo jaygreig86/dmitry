@@ -6,6 +6,6 @@
 extern char user[10];
 extern int irc;
 extern void irc_sendData();
-extern void print_line();
+extern void print_line(char *string, char *string2);
 extern char outputfile[64];
 

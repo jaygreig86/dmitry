@@ -1,5 +1,11 @@
 #include "includes/netcraft.h"
 
+char write_l[128];
+char uptime[128];
+char os[32];
+int tmp = 0;
+char temp[1024];
+
 int format_c(char *host)
 {
         ctr = 0;
@@ -48,7 +54,7 @@ int format_c(char *host)
 		if ( temp[4] == '<' && temp[5] == 't' && temp[6] == 'd' && temp[7] == '>' ){
 			tmp++;
 			if ( tmp == 1 ){
-				print_line("Uptime Information:\n\n");
+				print_line("Uptime Information:\n\n", NULL);
 			}
 			memset(os, '\0', sizeof(os));
 			ctr3 = 10;
@@ -112,7 +118,7 @@ int get_netcraft(char *host)
 		format_c(host);
 			
 		if ( recvbuff[0] == '\0' ){
-			print_line("Netcraft.com Information gathered\n");
+			print_line("Netcraft.com Information gathered\n", NULL);
 			close(tcp_sock);
 			tcp_sock = 0;
 			if ( strlen(outputfile) ) file_close();

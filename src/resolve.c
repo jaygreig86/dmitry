@@ -6,7 +6,7 @@
 #include <ctype.h>
 #define MAXIPLEN 17
 #define MAXNAMELEN 128
-extern void print_line();
+extern void print_line(char *string, char *string2);
 extern char outputfile[64];
 extern int file_open();
 extern int file_close();

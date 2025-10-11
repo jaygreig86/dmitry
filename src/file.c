@@ -1,6 +1,9 @@
 #include "includes/file.h"
 #include <string.h>
 #include <stdlib.h>
+
+FILE *wfp;
+
 int file_prep()
 {
 	outputfile[strlen(outputfile)] = '\0';

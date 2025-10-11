@@ -1,5 +1,18 @@
 #include "includes/iwhois.h"
 
+int result;
+int check = 0;
+int ctr2 = 0;
+int check2 = 0;
+int ctr3;
+int ctr4;
+int ctr;
+char ch;
+char netb[64];
+char filebuff[1024];
+char recvbuff[128];
+char sendbuff[255];
+
 int get_iwhois(char *host)
 {
 	int hostn;
@@ -15,7 +28,7 @@ int get_iwhois(char *host)
 	snprintf(linebuff, sizeof(linebuff), "---------------------------------\n\n");
 	print_line("%s", linebuff);
 	if (! host[0] ){
-		print_line("ERROR: No Host IP to work from\n");
+		print_line("ERROR: No Host IP to work from\n", NULL);
 		if ( strlen(outputfile) ) file_close();
 		return 0;
 	}
