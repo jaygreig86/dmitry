@@ -14,6 +14,7 @@
 #include <netdb.h>
 #include <arpa/inet.h>
 #include <sys/uio.h>
+#include <sys/time.h>
 #include <unistd.h>
 #include <setjmp.h>
 #include <signal.h>
@@ -54,13 +55,24 @@ int sock_con(char* host, int port, int ttl)
 #else
     if (__sigsetjmp(_port_sock_jmpbuf, 1) != 0) {
 #endif
+        alarm(0);
         return 2;
     }
 
     if (connect(tcp_sock, (struct sockaddr*)&sock, sizeof(sock)) < 0) {
+        alarm(0);
         return 1;
     }
 
+    /* Apply a receive timeout for banner reads */
+    if (ttl > 0) {
+        struct timeval tv;
+        tv.tv_sec = ttl;
+        tv.tv_usec = 0;
+        setsockopt(tcp_sock, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+    }
+
+    alarm(0);
     return 0;
 }
 
