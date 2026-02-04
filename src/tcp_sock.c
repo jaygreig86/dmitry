@@ -14,6 +14,8 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 
+int tcp_sock = 0;
+
 // struct sockaddr_in sock; /* Structure for socket address         */
 // long address; /* Remote IP (4 octet) address          */
 // struct hostent* ph;

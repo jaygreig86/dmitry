@@ -6,7 +6,9 @@
 
 // fpos_t file_loc;
 // char filename[64];
-// extern char outputfile[64];
+
+FILE *wfp = NULL;
+char outputfile[64] = { 0 };
 
 int file_prep()
 {
