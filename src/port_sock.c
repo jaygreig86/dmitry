@@ -66,8 +66,19 @@ int sock_con(char* host, int port, int ttl)
 
 void banner(char* readbuff, int readsize)
 {
+    ssize_t bytes_read;
+
+    if (readsize <= 0) {
+        return;
+    }
+
     memset(readbuff, '\0', readsize); /* Clear read buffer (null) */
-    read((int)tcp_sock, (char*)readbuff, (int)readsize);
+    bytes_read = read((int)tcp_sock, (char*)readbuff, (int)readsize - 1);
+    if (bytes_read <= 0) {
+        readbuff[0] = '\0';
+        return;
+    }
+    readbuff[bytes_read] = '\0';
     printf(">> %s\n", readbuff);
 }
 

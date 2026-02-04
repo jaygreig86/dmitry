@@ -50,10 +50,15 @@ int portscan(char* entry, int ttl, int options)
             printf("%s", filebuff);
             if (options >= 100) {
                 banner(recvbuff, sizeof(recvbuff));
-                if (recvbuff[strlen(recvbuff) - 1] != '\n')
-                    recvbuff[strlen(recvbuff) - 1] = '\n';
-                if (strlen(outputfile))
-                    fputs(recvbuff, wfp);
+                if (recvbuff[0] != '\0') {
+                    size_t recv_len = strlen(recvbuff);
+                    if (recv_len > 0 && recv_len < sizeof(recvbuff) - 1 && recvbuff[recv_len - 1] != '\n') {
+                        recvbuff[recv_len] = '\n';
+                        recvbuff[recv_len + 1] = '\0';
+                    }
+                    if (strlen(outputfile))
+                        fputs(recvbuff, wfp);
+                }
             }
         }
         if (result == 1) {
