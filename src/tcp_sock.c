@@ -5,81 +5,98 @@
  */
 /* TCP Socket construction */
 #include "includes/tcp_sock.h"
-#include <string.h>
-#include <stdio.h>
+#include <arpa/inet.h>
 #include <ctype.h>
-int tcp_socket(char *host, int port)
+#include <netdb.h>
+#include <netinet/in.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+
+// struct sockaddr_in sock; /* Structure for socket address         */
+// long address; /* Remote IP (4 octet) address          */
+// struct hostent* ph;
+// int args[2][1];
+// char print[512];
+// struct in_addr** pptr;
+// int bind_sock;
+// int con_sock;
+// int irc_sock;
+
+int tcp_socket(char* host, int port)
 {
-	memset(&sock, '\0', sizeof(sock));
-	if(isdigit(host[0])) {
-		if ((address = inet_addr(host)) == -1) {
-	                printf("Error: Unable to connect - Invalid Host\n");
-			return 1;
-			}
+    struct sockaddr_in sock; /* Structure for socket address         */
+    long address; /* Remote IP (4 octet) address          */
+    struct hostent* ph;
+    struct in_addr** pptr;
 
-	        sock.sin_addr.s_addr = address;
-	        
-		}
-        else {
-                if(!(ph = gethostbyname(host))) {
-                printf("Error: Unable to connect - Invalid Host\n");
-		return 2;
-                }
-
-		pptr = (struct in_addr **) ph->h_addr_list;
-		memcpy(&sock.sin_addr, *pptr, sizeof(struct in_addr));
+    memset(&sock, '\0', sizeof(sock));
+    if (isdigit(host[0])) {
+        if ((address = inet_addr(host)) == -1) {
+            printf("Error: Unable to connect - Invalid Host\n");
+            return 1;
         }
 
-	sock.sin_family = AF_INET;
+        sock.sin_addr.s_addr = address;
 
-	/* Place port in sock information structure */
+    } else {
+        if (!(ph = gethostbyname(host))) {
+            printf("Error: Unable to connect - Invalid Host\n");
+            return 2;
+        }
 
-	sock.sin_port = htons(port);
+        pptr = (struct in_addr**)ph->h_addr_list;
+        memcpy(&sock.sin_addr, *pptr, sizeof(struct in_addr));
+    }
 
-	/* open socket */
+    sock.sin_family = AF_INET;
 
-	if(tcp_sock == 0) {
-		if((tcp_sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-        		printf("Unable to connect: Error at socket build\n");
-			return 3;
-        	}
-	
-		/* Connet to remote host */
+    /* Place port in sock information structure */
+    sock.sin_port = htons(port);
 
-		if(connect(tcp_sock, (struct sockaddr *) &sock, sizeof (sock)) < 0) {
-        		printf("Unable to connect: Socket Connect Error\n");
-			return 4;
-	        }
-	return 0;
-	}
+    /* open socket */
+    if (tcp_sock == 0) {
+        if ((tcp_sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+            printf("Unable to connect: Error at socket build\n");
+            return 3;
+        }
 
-	printf("Socket Error\n");
-	return 1;
+        /* Connect to remote host */
+
+        if (connect(tcp_sock, (struct sockaddr*)&sock, sizeof(sock)) < 0) {
+            printf("Unable to connect: Socket Connect Error\n");
+            return 4;
+        }
+        return 0;
+    }
+
+    printf("Socket Error\n");
+    return 1;
 }
 
 /* TCP Socket Disconnect */
 
 void tcp_sockdcon()
 {
-if (close((int) tcp_sock)) printf("close error\n");
-	tcp_sock = 0;
-
+    if (close((int)tcp_sock))
+        printf("close error\n");
+    tcp_sock = 0;
 }
 
 /* Read Data Function (Data IN)*/
 
-void readData(char *readbuff, int readsize)
+void readData(char* readbuff, int readsize)
 {
-	memset(readbuff, '\0', readsize);      	/* Clear read buffer (null) */
-	read((int) tcp_sock, (char *) readbuff, (int) readsize);
-/*	printf(">> %s\n", readbuff); */
+    memset(readbuff, '\0', readsize); /* Clear read buffer (null) */
+    read((int)tcp_sock, (char*)readbuff, (int)readsize);
+    /*	printf(">> %s\n", readbuff); */
 }
 
 /* Send Data Function (Data OUT) */
 
-void sendData(char *sendbuff, int sendsize)
+void sendData(char* sendbuff, int sendsize)
 {
-	write((int) tcp_sock, (char *) sendbuff, (int) sendsize);
-/*	printf("<< %s\n", sendbuff); */
+    write((int)tcp_sock, (char*)sendbuff, (int)sendsize);
+    /*	printf("<< %s\n", sendbuff); */
 }
-

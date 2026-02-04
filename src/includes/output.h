@@ -1,11 +1,10 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <string.h>
-#include "file.h"
-#include <time.h>
-extern char user[10];
-extern int irc;
-extern void irc_sendData();
-extern void print_line();
-extern char outputfile[64];
+#ifndef _OUTPUT_H
+#define _OUTPUT_H
 
+#include <stdarg.h>
+#include "file.h"
+
+void print_line(const char *format, ...);
+char* _format_string(va_list args);
+
+#endif

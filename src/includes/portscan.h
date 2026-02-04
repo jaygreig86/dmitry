@@ -1,7 +1,6 @@
-#include "file.h"
-#include "tcp_sock.h"
-char recvbuff[128];
-char filebuff[255];
-int tmp;
-int result;
-int closed;
+#ifndef _PORTSCAN_H
+#define _PORTSCAN_H
+
+int portscan(char *entry, int ttl, int options);
+
+#endif

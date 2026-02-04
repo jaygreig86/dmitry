@@ -1,23 +1,11 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#define NCOL 40
-#define MAXIPLEN 17
-extern int tcp_socket();
-extern void readData();
-extern void sendData();
-extern int get_host();
-extern void tcp_sockdcon();
-extern char outputfile[64];
-extern int file_open();
-extern void file_close();
-extern void print_line();
-extern int tcp_sock;
-int get_hoststring();
-int subcount;
-int grab_sub();
-int sublist();
-char **subbuff;
-int pagenumber; /* Used as a variable to store current page number (of results)*/
-char pagestring[32]; /* The string to request a new page */
+#ifndef _SUBSEARCH_H
+#define _SUBSEARCH_H
 
+#define MAXIPLEN 17
+
+int get_subdomains(char* host);
+int get_hoststring(char* host);
+int grab_sub(char* buff, int pointer, char* host);
+int sublist(char* sub, char* host);
+
+#endif
