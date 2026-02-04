@@ -53,6 +53,7 @@ int main(int argc, char** argv)
     int otherops = 0; /*Are there any other options selected other than fileoutput (-o) */
     char host_ip[MAXIPLEN];
     char host_name[MAXNAMELEN];
+    char *host_arg = NULL;
 
     memset(host_name, '\0', MAXNAMELEN);
     memset(host_ip, '\0', MAXIPLEN);
@@ -72,6 +73,7 @@ int main(int argc, char** argv)
 
     int optchar;
     int options[10];
+    memset(options, 0, sizeof(options));
 
     /* The following set is for the command line options used (-winspfto) */
     while ((optchar = getopt(argc, argv, "viwenspbfo:t:")) != -1) {
@@ -147,6 +149,16 @@ int main(int argc, char** argv)
         }
     }
 
+    if (optind >= argc) {
+        printf("Usage: %s [-winsepfb] [-t 0-9] [-o %%host.txt] host\n", argv[0]);
+        for (unsigned int ctr = 0; ctr < 11; ctr++) {
+            printf("%s", message[ctr]);
+        }
+        exit(1);
+    }
+
+    host_arg = argv[optind];
+
     /* If no options are select then assume
     default that are all to be carried out */
 
@@ -174,21 +186,21 @@ int main(int argc, char** argv)
         file_open();
     /* Check if host exists/is available and resolve */
 
-    switch (inet_addr(argv[argc - 1])) {
+    switch (inet_addr(host_arg)) {
     case INADDR_NONE:
-        if (!get_host(argv[argc - 1], host_ip)) {
-            print_line("ERROR: Unable to locate Host IP addr. for %s\n", argv[argc - 1]);
+        if (!get_host(host_arg, host_ip)) {
+            print_line("ERROR: Unable to locate Host IP addr. for %s\n", host_arg);
             print_line("Continuing with limited modules\n");
         }
-        strncpy(host_name, argv[argc - 1], MAXNAMELEN - 1);
+        strncpy(host_name, host_arg, MAXNAMELEN - 1);
         host_name[MAXNAMELEN - 1] = '\0';
         break;
     default:
-        if (!get_host(argv[argc - 1], host_name)) {
-            print_line("ERROR: Unable to locate Host Name for %s\n", argv[argc - 1]);
+        if (!get_host(host_arg, host_name)) {
+            print_line("ERROR: Unable to locate Host Name for %s\n", host_arg);
             print_line("Continuing with limited modules\n");
         }
-        strncpy(host_ip, argv[argc - 1], MAXIPLEN - 1);
+        strncpy(host_ip, host_arg, MAXIPLEN - 1);
         host_ip[MAXIPLEN - 1] = '\0';
         break;
     }
