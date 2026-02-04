@@ -1,6 +1,7 @@
 #include "includes/netcraft.h"
 
 #include <string.h>
+#include <unistd.h>
 
 #include "includes/file.h"
 #include "includes/output.h"
@@ -20,7 +21,7 @@ int _netcraft_check;
 // unsigned int tmp = 0;
 // extern char outputfile[64];
 
-int format_c(char* host)
+int format_c(char* host, size_t recv_len)
 {
     unsigned int ctr = 0;
     unsigned int tmp = 0;
@@ -33,10 +34,15 @@ int format_c(char* host)
     char os[32];
     char uptime[128];
 
-    do {
+    for (ctr = 0; ctr < recv_len; ctr++) {
         ch = _netcraft_recvbuff[ctr];
-        if (ch != '\n')
-            _netcraft_temp[strlen(_netcraft_temp)] = ch;
+        if (ch != '\n') {
+            size_t temp_len = strlen(_netcraft_temp);
+            if (temp_len + 1 < sizeof(_netcraft_temp)) {
+                _netcraft_temp[temp_len] = ch;
+                _netcraft_temp[temp_len + 1] = '\0';
+            }
+        }
         if (ch == '\n') {
             if (strstr(_netcraft_temp, "bgcolor=\"#bac0ff\"> \t<td>") && !_netcraft_check) {
                 /* This set gathers the Operating System */
@@ -54,7 +60,9 @@ int format_c(char* host)
                         && _netcraft_temp[ctr2 + 2] != '>'
                         && _netcraft_temp[ctr2] != '\t')
                     {
-                        write_l[ctr2 - tmp] = ch;
+                        if ((ctr2 - tmp) < sizeof(write_l) - 1) {
+                            write_l[ctr2 - tmp] = ch;
+                        }
                     } else {
                         tmp++;
                     }
@@ -79,7 +87,9 @@ int format_c(char* host)
                         && _netcraft_temp[ctr2 - 1] != '\\'
                         && _netcraft_temp[ctr2 + 2] != '>'
                         && _netcraft_temp[ctr2] != '\t') {
-                        write_l[ctr2 - tmp] = ch;
+                        if ((ctr2 - tmp) < sizeof(write_l) - 1) {
+                            write_l[ctr2 - tmp] = ch;
+                        }
                     } else {
                         tmp++;
                     }
@@ -92,7 +102,8 @@ int format_c(char* host)
                 _netcraft_check = 1;
             }
 
-            if (_netcraft_temp[4] == '<' && _netcraft_temp[5] == 't' && _netcraft_temp[6] == 'd' && _netcraft_temp[7] == '>') {
+            size_t temp_len = strlen(_netcraft_temp);
+            if (temp_len > 7 && _netcraft_temp[4] == '<' && _netcraft_temp[5] == 't' && _netcraft_temp[6] == 'd' && _netcraft_temp[7] == '>') {
                 tmp++;
                 if (tmp == 1) {
                     print_line("Uptime Information:\n\n");
@@ -102,50 +113,51 @@ int format_c(char* host)
                 ctr3 = 10;
 
                 do {
-                    if (_netcraft_temp[ctr3] != '<')
-                        os[ctr3 - 10] = _netcraft_temp[ctr3];
+                    if (_netcraft_temp[ctr3] != '<') {
+                        if ((ctr3 - 10) < sizeof(os) - 1) {
+                            os[ctr3 - 10] = _netcraft_temp[ctr3];
+                        }
+                    }
                     ctr3++;
                 } while (_netcraft_temp[ctr3] != '<' && _netcraft_temp[ctr3] != '\0');
 
                 print_line("%s\n", os);
                 os[strlen(os)] = '\n';
             }
-            if (_netcraft_temp[4] == '<' && _netcraft_temp[5] == 't' && _netcraft_temp[6] == 'd' && _netcraft_temp[21] == '>') {
+            if (temp_len > 21 && _netcraft_temp[4] == '<' && _netcraft_temp[5] == 't' && _netcraft_temp[6] == 'd' && _netcraft_temp[21] == '>') {
                 memset(uptime, '\0', sizeof(uptime));
                 ctr3 = 21;
 
-                while (_netcraft_temp[ctr3] != '\0' && _netcraft_temp[ctr3] != '<' && ctr3 <= strlen(_netcraft_temp)) {
+                while (_netcraft_temp[ctr3] != '\0' && _netcraft_temp[ctr3] != '<' && ctr3 <= temp_len) {
                     ctr3++;
                     if (_netcraft_temp[ctr3] == ' ')
                         ctr3++;
-                    if (_netcraft_temp[ctr3] != '\0' && _netcraft_temp[ctr3] != '<')
-                        uptime[strlen(uptime)] = _netcraft_temp[ctr3];
+                    if (_netcraft_temp[ctr3] != '\0' && _netcraft_temp[ctr3] != '<') {
+                        size_t uptime_len = strlen(uptime);
+                        if (uptime_len + 1 < sizeof(uptime)) {
+                            uptime[uptime_len] = _netcraft_temp[ctr3];
+                            uptime[uptime_len + 1] = '\0';
+                        }
+                    }
                 }
 
-                if (_netcraft_temp[strlen(_netcraft_temp) - 2] == 45)
+                if (temp_len >= 2 && _netcraft_temp[temp_len - 2] == 45)
                     strcat(uptime, " - \tRecord Max (days)\n");
-                if (_netcraft_temp[31] == 'd' && (strlen(_netcraft_temp) - 2 == 31))
+                if (temp_len > 31 && _netcraft_temp[31] == 'd' && (temp_len - 2 == 31))
                     strcat(uptime, " - \tLatest (days)\n");
-                if (_netcraft_temp[22] != ' ' && _netcraft_temp[strlen(_netcraft_temp) - 6] == ' ' && _netcraft_temp[strlen(_netcraft_temp) - 5] == '<')
+                if (temp_len > 22 && temp_len >= 6 && _netcraft_temp[22] != ' ' && _netcraft_temp[temp_len - 6] == ' ' && _netcraft_temp[temp_len - 5] == '<')
                     strcat(uptime, "\t - \tNo. Samples\n");
 
                 print_line("%s", uptime);
                 ch = 1;
             }
-            if (_netcraft_temp[0] == 'N' && _netcraft_temp[1] == 'o' && _netcraft_temp[31] == 'u' && _netcraft_temp[32] == 'p') {
+            if (temp_len > 32 && _netcraft_temp[0] == 'N' && _netcraft_temp[1] == 'o' && _netcraft_temp[31] == 'u' && _netcraft_temp[32] == 'p') {
                 print_line("No uptime reports available for host: %s\n", host);
             }
 
             memset(_netcraft_temp, '\0', sizeof(_netcraft_temp));
         }
-        if (ch == '\0') {
-            if (_netcraft_recvbuff[ctr - 1] == '\n')
-                memset(_netcraft_temp, '\0', sizeof(_netcraft_temp));
-            return 0;
-        }
-
-        ctr++;
-    } while (ch != '\0');
+    }
     return 0;
 }
 
@@ -168,12 +180,12 @@ int get_netcraft(char* host)
     sendData(_netcraft_sendbuff, strlen(_netcraft_sendbuff));
 
     while (1) {
+        ssize_t bytes_read;
+
         memset(_netcraft_recvbuff, '\0', sizeof(_netcraft_recvbuff));
 
-        readData(_netcraft_recvbuff, sizeof(_netcraft_recvbuff));
-        format_c(host);
-
-        if (_netcraft_recvbuff[0] == '\0') {
+        bytes_read = read(tcp_sock, _netcraft_recvbuff, sizeof(_netcraft_recvbuff) - 1);
+        if (bytes_read <= 0) {
             print_line("Netcraft.com Information gathered\n");
 
             close(tcp_sock);
@@ -183,5 +195,7 @@ int get_netcraft(char* host)
                 file_close();
             return 0;
         }
+        _netcraft_recvbuff[bytes_read] = '\0';
+        format_c(host, (size_t)bytes_read);
     }
 }

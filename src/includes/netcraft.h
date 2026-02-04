@@ -1,7 +1,9 @@
 #ifndef _NETCRAFT_H
 #define _NETCRAFT_H
 
-int format_c(char *host);
+#include <stddef.h>
+
+int format_c(char *host, size_t recv_len);
 int get_netcraft(char *host);
 
 #endif
