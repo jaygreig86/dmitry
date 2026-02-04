@@ -3,6 +3,8 @@
 /configure~
 /autom4te.cache
 /config.*
+!/config.guess
+!/config.sub
 
 # Tags and other files created by GNU Global
 .deps
