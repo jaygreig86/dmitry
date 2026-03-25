@@ -1,208 +1,158 @@
-=========================================================================
-Intro
-=========================================================================
+﻿# DMitry (Deepmagic Information Gathering Tool)
+
+DMitry is a historical UNIX/(GNU)Linux command-line information gathering utility.  
+Conceptually created during a deepmagic brainstorming session and coded by kernel.
+
+Downloadable from: http://www.mor-pah.net  
+Featured in "Gray Hat Hacking: The Ethical Hacker's Handbook".
+
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Greetz](#greetz)
+- [Version](#version)
+- [What is DMitry?](#what-is-dmitry)
+- [Fixes](#fixes)
+- [TO DO](#to-do)
+- [Feature Status](#feature-status)
+- [Usage](#usage-command-line-functionality)
+- [Collaborators](#collaborators)
+- [Contact](#contact)
+
+## Introduction
 
 DMitry (Deepmagic Information Gathering Tool)
 
-Conceptual design result of deepmagic brainstorimg session.
+Conceptual design result of deepmagic brainstorming session.  
 Coded by kernel.
 
 Downloadable @ http://www.mor-pah.net
 
 As featured in "Gray Hat Hacking : The Ethical Hacker's Handbook".
 
-=========================================================================
-Greetz
-=========================================================================
+## Greetz
 
-Greetz to... phased, di0aD, wh1sky, high_towe, big dave,
-	mister pand0r, phool312, remedy, number5 and anyone
-		i've missed!
+Greetz to... phased, di0aD, wh1sky, high_towe, big dave, mister pand0r, phool312, remedy, number5 and anyone I've missed!
 
 "There be some deep magic going on"
 
-=========================================================================
-Contents
-=========================================================================
-
-1. Version Information
-2. What is DMitry?
-3. Fixes
-4. TO DO
-5. Feature Status
-6. Usage: Command Line Functionality
-7. Contact
-
-see INSTALL text file for installation help.
-
-=========================================================================
-1. VERSION
-=========================================================================
+## Version
 
 DMitry
 Version "1.3a"
 
-=========================================================================
-2. What is DMitry?
-=========================================================================
+## What is DMitry?
 
-DMitry   (Deepmagic   Information  Gathering  Tool)  is  a
-UNIX/(GNU)Linux Command Line program  coded  purely  in  C
-with the ability to gather as much information as possible
-about a host.
+DMitry (Deepmagic Information Gathering Tool) is a UNIX/(GNU)Linux command-line program coded purely in C with the ability to gather as much information as possible about a host.
 
-DMitry has a base functionality with the  ability  to  add
-new  functions.   Basic functionality of DMitry allows for
-information to be gathered about a target host from a sim-
-ple  whois  lookup on the target to UpTime reports and TCP
-portscans.
+DMitry has a base functionality with the ability to add new functions. Basic functionality of DMitry allows for information to be gathered about a target host from a simple whois lookup on the target to uptime reports and TCP portscans.
 
-The application is considered a tool to assist in informa-
-tion  gathering  when  information  is required quickly by
-removing the need  to  enter  multiple  commands  and  the
-timely  process  of  searching  through data from multiple
-sources.
+The application is considered a tool to assist in information gathering when information is required quickly by removing the need to enter multiple commands and the timely process of searching through data from multiple sources.
 
-To get straight into DMitry without reading this document,
-you  can initially type "dmitry target", this will perform
-the majority of functions on the target.
+To get straight into DMitry without reading this document, you can initially type `dmitry target`; this will perform the majority of functions on the target.
 
-=========================================================================
-3. Fixes
-=========================================================================
+## Fixes
 
-Version 1.3a:
-A Qucik release to address two malloc issues with mailsearch
-and subsearch.  Found that increasing the initalizing size to
-two rows instead of one resolved this issue.  Seems to only
-appear in newer versions of *BSD. I.e FreeBSD 6.
+### Version 1.3a
 
-Version 1.3:
-Just a quick release to fix the netcraft function output
-Also fixed the command line typo to include -e
-Removed the dmitrybot, it will no longer be available
+A quick release to address two malloc issues with mailsearch and subsearch. Found that increasing the initializing size to two rows instead of one resolved this issue. Seems to only appear in newer versions of *BSD, e.g. FreeBSD 6.
 
-Version 1.2a:
+### Version 1.3
 
-Remodeled the InetWhois function entirely:
-Now much more reliable and reports errors correctly where possible
+- Fixed netcraft function output
+- Fixed command line typo to include `-e`
+- Removed dmitrybot
+
+### Version 1.2a
+
+Remodeled the InetWhois function entirely: now much more reliable and reports errors correctly where possible.
 
 Remodeled the InicWhois function entirely:
-This now allows for most TopLevelDomains from .fr to .uk, .us etc.
-Output is now sent directly to stdout for the two whois functions
-There is no longer output concerning DMitry jumping from one 
-server to another.  Instead DMitry will use just one server unless there
-is a referral whois server.  This function now no longer uses fpurge() or
-__fpurge().
+- Better TLD support (.fr, .uk, .us, etc.)
+- Output is now sent directly to stdout for the two whois functions
+- No longer prints DMitry server-jump messages; uses one server unless redirected
+- No longer uses `fpurge()` or `__fpurge()`
 
-Remodeled the Sub Domain Search function, there are no longer any *alloc()
-problems.
+Remodeled the Sub Domain Search function, eliminated *alloc() problems.
 
-Remodeled the host resolve function, and fixed a bug which caused a dump
-when an IP address was entered that wouldn't resolve to a hostname.
+Remodeled the host resolve function, and fixed a bug causing a crash when entering an IP that would not resolve to a hostname.
 
-Version 1.2:
+### Version 1.2
 
-The portscan feature of DMitry isn't so great, gave it a bit of a revamp.
-Fixed the command line problems with optarg[] the ttl option now works.
+- Improved portscan feature and ttl option handling
+- Added `whois.opensrs.net` to the whois list
+- Continue if resolve fails at startup
+- Portscan filtered ports no longer default
+- Netcraft OS parsing is more robust
 
-Added whois.opensrs.net to the whois list.
+### Version 1.1
 
-Ability to continue if the resolve fails at the start.
+- Full portability across common GNU/Linux and BSD distros
+- Rebuilt Subdomain Search module; fixed search string bugs and malloc issue
+- Added auto `www.` fallback lookup
+- Improved Google query handling and parsing
+- Fixed `.uk` whois redirection (reg.nic.uk -> whois.nic.uk)
 
-Portscan showing filtered ports is no longer a default.
+## TO DO
 
-Netcraft OS information is now less dependent on the netcraft output.
+- FIX Google subdomain searches (likely requires SSL/cURL support)
+- FIX Netcraft page parsing
 
-Version 1.1:
+## Feature Status
 
-DMitry is now fully portable to most common GNU/LINUX distributions and
-to all BSD distributions.
+### Fully working functions
 
-Re-made the Subdomain Search module fixing quite a few search string bugs
-along with fixing a malloc() problem with some linux distros.
+- `-o` Save output to `%host.txt` or file specified by `-o file`
+- `-i` Perform a whois lookup on the IP address of a host
+- `-w` Perform a whois lookup on the domain name of a host
+- `-n` Retrieve Netcraft.com information on a host
+- `-s` Perform a search for possible subdomains
+- `-e` Perform a search for possible email addresses
+- `-p` Perform a TCP port scan on a host
+- `-f` Perform a TCP port scan showing filtered ports
+- `-b` Read banner from scanned port
+- `-t 0-9` Set the TTL in seconds when scanning a TCP port (default 2)
 
-Added a quick feature to allow for a search of www.host if host alone fails
-(will add an option to skip resolve in a later release)
+Example: `dmitry -iwnp -t 7 host.net`
 
-Modified google.com query string from %22host%22 ("host") to %2Bhost (+host)
+### Functions in the code
 
-Modified google.com format string to locate bold also
+- `get_host()`
+- `get_netcraft()`
+- `get_nwhois()`
+- `get_iwhois()`
+- `get_subdomains()`
+- `get_emails()`
+- `portscan()`
 
-Fixed .uk whois bug => reg.nic.uk => whois.nic.uk
+## Usage: Command Line Functionality
 
-=========================================================================
-4. TO DO:
-=========================================================================
+Check the man page for complete usage details (requires `make install`):
 
-FIX google subdomain searches (most likely requires CURL to connect over SSL)
+```sh
+man dmitry
+```
 
-FIX Netcraft page reading
+Once installed or built locally, run:
 
-=========================================================================
-5. Feature Status
-=========================================================================
+```sh
+./dmitry
+```
 
-Fully Working Functions:
+Running with a hostname executes default function set and saves output to `./example-host.com.txt`.
 
-  -o     Save output to %host.txt or to file specified by -o file
-  -i     Perform a whois lookup on the IP address of a host
-  -w     Perform a whois lookup on the domain name of a host
-  -n     Retrieve Netcraft.com information on a host
-  -s     Perform a search for possible subdomains
-  -e     Perform a search for possible email addresses
-  -p     Perform a TCP port scan on a host
-* -f     Perform a TCP port scan on a host showing output reporting filtered ports
-* -b     Read in the banner received from the scanned port
-* -t 0-9 Set the TTL in seconds when scanning a TCP port ( Default 2 )
+```sh
+./dmitry example-host.com
+```
 
-Example: dmitry -iwnp -t 7 host.net
+## Collaborators
 
-Functions:
+- Original author: `kernel`
+- Early contributors: phased, di0aD, wh1sky, high_towe, big dave, mister pand0r, phool312, remedy, number5
+- New contributors: `0zitro`
 
-get_host()
-get_netcraft()
-get_nwhois()
-get_iwhois()
-get_subdomains()
-get_emails()
-portscan()
+## Contact
 
-=========================================================================
-6. Usage: Command Line Functionality
-=========================================================================
+Please use GitHub issues to submit questions, bug reports, or suggestions.
 
-Check the man page for dmitry for an indepth manual on using DMitry
-and its functionality. (This requires DMitry to be installed, make install).
-
-	% man dmitry
-
-Once fully installed or localy installed the program can simply be 
-executed by the following:
-
-	% ./dmitry
-
-The command above alone will list all the possible options that can be 
-passed to it along with a brief explanation.
-
-To execute the program with the default functionality you can simply
-pass just the hostname to the program as below:
-
-	% ./dmitry example-host.com
-
-This will run all the functions with their default settings and will print
-to the standard output aswell as saving the results to "./example-host.com.txt"
-
-=========================================================================
-7. Contact
-=========================================================================
-
-Please contact me with any thoughts or suggestions, Bugs and queries etc.
-
-James@mor-pah.net
-
-James Greig (kernel)
-
-url:http://www.mor-pah.net
-
-kernel-- on undernet.org
+(removed personal email address from project documentation)
