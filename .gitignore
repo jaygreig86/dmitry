@@ -1,0 +1,20 @@
+# Autotools temporaries
+/Makefile
+/configure~
+/autom4te.cache
+/config.*
+!/config.guess
+!/config.sub
+
+# Tags and other files created by GNU Global
+.deps
+.dirstamp
+/GPATH
+/GTAGS
+/GRTAGS
+
+# Artefacts
+*.o
+*.so
+/dmitry
+/dmitry.exe
