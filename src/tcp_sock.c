@@ -1,6 +1,6 @@
 /* TCP Socket header
- * Coded by James Greig
- * James@mor-pah.net
+ * Original code by James Greig
+ * jaygreig86 on github
  * Date: 16/06/03
  */
 /* TCP Socket construction */
