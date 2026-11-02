@@ -162,6 +162,10 @@ int ip_format_buff(char* buff, int server)
         }
         frmtdbuff[strlen(frmtdbuff)] = buff[ctr];
         ctr++;
+        if (strlen(frmtdbuff) >= sizeof(frmtdbuff) - 1) {
+            print_line("%s", frmtdbuff);
+            memset(frmtdbuff, '\0', sizeof(frmtdbuff));
+        }
     }
     if (strlen(frmtdbuff))
         _iwhois_linetodo = 1;
