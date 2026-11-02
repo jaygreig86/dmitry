@@ -142,11 +142,11 @@ int format_c(char* host, size_t recv_len)
                 }
 
                 if (temp_len >= 2 && _netcraft_temp[temp_len - 2] == 45)
-                    strcat(uptime, " - \tRecord Max (days)\n");
+                    strncat(uptime, " - \tRecord Max (days)\n", sizeof(uptime) - strlen(uptime) - 1);
                 if (temp_len > 31 && _netcraft_temp[31] == 'd' && (temp_len - 2 == 31))
-                    strcat(uptime, " - \tLatest (days)\n");
+                    strncat(uptime, " - \tLatest (days)\n", sizeof(uptime) - strlen(uptime) - 1);
                 if (temp_len > 22 && temp_len >= 6 && _netcraft_temp[22] != ' ' && _netcraft_temp[temp_len - 6] == ' ' && _netcraft_temp[temp_len - 5] == '<')
-                    strcat(uptime, "\t - \tNo. Samples\n");
+                    strncat(uptime, "\t - \tNo. Samples\n", sizeof(uptime) - strlen(uptime) - 1);
 
                 print_line("%s", uptime);
                 ch = 1;
